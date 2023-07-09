@@ -11,7 +11,7 @@ testBoolean = false;
 // Multiple Types (Union Types)
 let testStringOrNumber: string | number;
 
-// --------------------------------------------------- Exclude  ---------------------------------------------------  //
+// -------------------------------------- Exclude  ---------------------------------------------------  //
 
 type ShapeType = "cube" | "square" | "rectangle" | "triangle";
 type TwoDShapeType = Exclude<ShapeType, "cube">;
@@ -24,7 +24,7 @@ type ItemProps = {
     color_2: Exclude<`${ThemeType}-${ColorType}`, "dark-yellow">;
   };
 
-// --------------------------------------------------- Array type  ---------------------------------------------------  //
+// ---------------------------------- Array type  ---------------------------------------------------  //
 let fruitArray = ["apple", "orange", "orange"];
 fruitArray.push(12, "banana");
 
@@ -35,7 +35,7 @@ let fruitArray_1: number[];
 let fruitArray_2: string[];
 let fruitArray_3: (string | number)[];
 
-// --------------------------------------------------- Object type  ---------------------------------------------------  //
+// -------------------------------- Object type  --------------------------------------  //
 type UserType = {
   id: number;
   name: string;
@@ -68,7 +68,8 @@ const userFunction = (user: UserType) => {
   console.log(user.name);
 };
 
-// --------------------------------------------------- function type  ---------------------------------------------------  //
+// ------------------------------------ function type  --------------------------------------------  //
+
 // this function return void, number or string
 type myfunc = (a: number, b: string) => void | number | string;
 
@@ -76,7 +77,7 @@ let newfunction: myfunc = (num, str) => {
   console.log(num + "time " + str);
 };
 
-// --------------------------------------------------- interface  ---------------------------------------------------  //
+// ----------------------------------- interface  ------------------------------------------------  //
 // we use interface instead of type because can extends interface
 interface IUser {
   id: number;
@@ -94,7 +95,7 @@ const employeeDetails: IEmployee = {
   employeeId: 1234,
 };
 
-// --------------------------------------------------- interface ( not better ) ---------------------------------------------------  //
+// --------------------------------- interface ( not better ) --------------------------------------  //
 
 interface IAuthor {
   id: number;
@@ -113,7 +114,7 @@ interface IPost {
   extra: IAuthor[] | ICategory[];
 }
 
-// --------------------------------------------------- interface ( better ) generics---------------------------------------------------  //
+// ----------------------------- interface ( better ) generics------------------------------------  //
 
 // Generics
 interface IPostBetter<T> {
@@ -130,7 +131,7 @@ const testMe: IPostBetter<string | boolean> = {
   extra: ["test", 12, "any thing", true],
 };
 
-// --------------------------------------------------- interface ( even better ) generics---------------------------------------------------  //
+// ------------------------------ interface ( even better ) generics------------------------------------  //
 
 interface IPostEvenBetter<T extends object> {
   id: number;
@@ -169,7 +170,17 @@ const testMe_4: IPostEvenBetter<ICategory> = {
   ],
 };
 
-// -------------------------------------- props-react-typescript --------------------------------------  //
+
+// --------------------------------- react-typescript-props -----------------------------------------------  //
+
+interface IHeaderProps {}
+
+export default Header: React.FunctionComponent<IHeaderProps> = (props) => {
+  return (
+
+  )  
+
+// --------------------------------- props-react-typescript ------------------------------------------------  //
 
 const ParentsPostCard = () => { return <ChildPostCard title:"post Title" desc:"post Desc" / > }
 
@@ -177,21 +188,24 @@ const ChildPostCard = (props: {title:string, desc:string}) => {}
 
 
 
-// ----------------------------------- props-react-typescript --------------------------------------  //
+// --------------------------------- props-react-typescript -----------------------------------------------  //
 
 export type PostProps = { id: number; title: string; body: string };
 
-// parents
-const PostList = async () => {
+// parents components
+export default PostList = async () => {
+// fetching data
 const data: PostProps[] = await getData();
 return (
   {data.map((post) => ( <PostCard key={post.id} {...post} /> ))}
 )
-// child
-const PostCard = ({title,body}: PostProps) => {}
+
+// child components
+export default PostCard = ({title,body}: PostProps) => {}
 
 
-// ----------------------------------- props-react-typescript-generic --------------------------------------  //
+// ------------------------------ props-react-typescript-generic --------------------------------------  //
+
 // Paretns
 const ItemList = () => {
   return (<Item id={1}  title="post title"  extra={[ {id: 1, username: "john"}]} />)
@@ -206,4 +220,88 @@ const Item = (props: ItemProps<{ id: number; username: string }>) => {
   return <div>Item</div>;
 };
 
-// ----------------------------------- props-react-typescript --------------------------------------  //
+
+// ----------------------------------- react-typescript-props --------------------------------------  //
+
+interface IHeaderProps {}
+
+const Header: React.FunctionComponent<IHeaderProps> = (props) => {
+  return ()
+  
+// ----------------------------------- react-typescript --------------------------------------  //
+export interface Note {
+  id: string,
+  title: string,
+  text: string,
+  color: string,
+  date: string
+}
+
+import { Note } from ''
+
+interface INotesProps {
+  note: Note
+  handleDelete: (id: string) => void
+}
+
+const Notes: React.FC<INotesProps> = ({ note, handleDelete }) => {
+  return (
+  )
+
+// ----------------------------------- react-typescript --------------------------------------  //
+export interface Note {
+  id: string,
+  title: string,
+  text: string,
+  color: string,
+  date: string
+}
+
+const [notes, setNotes] = useState<Note[]>([{
+  id: new Date().toString(),
+  title: "Meeting",
+  text: "UI/UX Team",
+  color: "#dfdfdf",
+  date: new Date().toString()
+}])
+
+// ----------------------------------- react-typescript --------------------------------------  //
+
+interface ICreateNotesProps {
+  notes: Note[],
+  setNotes: React.Dispatch<React.SetStateAction<Note[]>>
+}
+
+const CreateNotes: React.FunctionComponent<ICreateNotesProps> = ({ notes, setNotes }) => {
+  const [error, setError] = React.useState<string>("")
+  const titleRef = React.useRef<HTMLInputElement | null>(null);
+  const textRef = React.useRef<HTMLTextAreaElement | null>(null);
+  const colorRef = React.useRef<HTMLInputElement | null>(null);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (titleRef.current?.value === "" || textRef.current?.value === "") {
+      return setError("All fields are mandatory")
+    } else {
+      setError("");
+      setNotes([...notes, {
+        id: (new Date()).toString(),
+        title: (titleRef.current as HTMLInputElement).value,
+        text: (textRef.current as HTMLTextAreaElement).value,
+        color: (colorRef.current as HTMLInputElement).value,
+        date: (new Date()).toString()
+      }])
+    }
+    (titleRef.current as HTMLInputElement).value = "";
+    (textRef.current as HTMLTextAreaElement).value = "";
+  }
+
+
+// ----------------------------------- react-typescript --------------------------------------  //
+const renderNotes = ():JSX.Element[] => {
+  return notes.map(note => {
+    return <Notes key={note.id} note={note} handleDelete={handleDelete}/>
+  })
+}
+
+// ----------------------------------- react-typescript --------------------------------------  //

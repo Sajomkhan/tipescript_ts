@@ -3,7 +3,6 @@ studentAge = 15;
 
 let studentName: string = "Rahim";
 studentName = "karim";
-studentName = 12;
 
 let testBoolean: boolean;
 testBoolean = false;

@@ -10,6 +10,26 @@ testBoolean = false;
 // Multiple Types (Union Types)
 let testStringOrNumber: string | number;
 
+// --------------------------------- props-----------------------------------------------  //
+
+export type PostProps = { 
+    id: number; 
+    title: string; 
+    body: string 
+};
+
+// parents components
+export default PostList = async () => {
+const data: PostProps[] = await getData();
+return (
+  {data.map((post) => ( 
+      <PostCard key={post.id} {...post} /> 
+  ))}
+)
+
+// child components
+export default PostCard = ({title,body}: PostProps) => {}
+
 // -------------------------------------- Exclude  ---------------------------------------------------  //
 
 type ShapeType = "cube" | "square" | "rectangle" | "triangle";
@@ -170,7 +190,7 @@ const testMe_4: IPostEvenBetter<ICategory> = {
 };
 
 
-// --------------------------------- react-typescript-props -----------------------------------------------  //
+// --------------------------------- props -----------------------------------------------  //
 
 interface IHeaderProps {}
 
@@ -179,7 +199,7 @@ export default Header: React.FunctionComponent<IHeaderProps> = (props) => {
 
   )  
 
-// --------------------------------- props-react-typescript ------------------------------------------------  //
+// --------------------------------- props ------------------------------------------------  //
 
 const ParentsPostCard = () => { return <ChildPostCard title:"post Title" desc:"post Desc" / > }
 
@@ -187,7 +207,7 @@ const ChildPostCard = (props: {title:string, desc:string}) => {}
 
 
 
-// --------------------------------- props-react-typescript -----------------------------------------------  //
+// --------------------------------- props -----------------------------------------------  //
 
 export type PostProps = { id: number; title: string; body: string };
 
@@ -203,7 +223,7 @@ return (
 export default PostCard = ({title,body}: PostProps) => {}
 
 
-// ------------------------------ props-react-typescript-generic --------------------------------------  //
+// ------------------------------ props generic --------------------------------------  //
 
 // Paretns
 const ItemList = () => {
@@ -220,7 +240,7 @@ const Item = (props: ItemProps<{ id: number; username: string }>) => {
 };
 
 
-// ----------------------------------- react-typescript-props --------------------------------------  //
+// ----------------------------------- props --------------------------------------  //
 
 interface IHeaderProps {}
 
